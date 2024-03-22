@@ -33,7 +33,12 @@ function App() {
     setAddBook(true);
   }
 
-  async function handleDelete() {}
+  async function handleDelete(id) {
+    await fetch(`http://127.0.0.1:5000/books/${id}`, {
+      method: "DELETE",
+    });
+    goHomeHandler();
+  }
 
   async function handleEdit(id) {
     setId(id);
@@ -52,7 +57,7 @@ function App() {
           <div key={book.id} onClick={() => clickHandler(book.id)}>
             <h3>{book.title}</h3>
             <button onClick={() => handleEdit(book.id)}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
+            <button onClick={() => handleDelete(book.id)}>Delete</button>
           </div>
         ))}
       {bookDetails && !openForm && (
