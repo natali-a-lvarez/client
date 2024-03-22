@@ -6,6 +6,9 @@ function App() {
   const [bookDetails, setBookDetails] = useState(false);
   const [book, setBook] = useState({});
   const [openForm, setOpenForm] = useState(false);
+  const [editBook, setEditBook] = useState(false);
+  const [addBook, setAddBook] = useState(false);
+  const [id, setId] = useState(0);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/books")
@@ -27,9 +30,16 @@ function App() {
 
   function openFormHandler() {
     setOpenForm(true);
+    setAddBook(true);
   }
 
   async function handleDelete() {}
+
+  async function handleEdit(id) {
+    setId(id);
+    setOpenForm(true);
+    setEditBook(true);
+  }
 
   return (
     <>
@@ -41,7 +51,7 @@ function App() {
         data.map((book) => (
           <div key={book.id} onClick={() => clickHandler(book.id)}>
             <h3>{book.title}</h3>
-            <button>Edit</button>
+            <button onClick={() => handleEdit(book.id)}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
           </div>
         ))}
@@ -54,7 +64,16 @@ function App() {
       {!openForm && !bookDetails && (
         <button onClick={openFormHandler}>Add a book</button>
       )}
-      {openForm && <Form setOpenForm={setOpenForm} />}
+      {openForm && (
+        <Form
+          setOpenForm={setOpenForm}
+          goHomeHandler={goHomeHandler}
+          addBook={addBook}
+          id={id}
+          setEditBook={setEditBook}
+          setAddBook={setAddBook}
+        />
+      )}
     </>
   );
 }
